@@ -13,7 +13,8 @@ const
      F9=17152;
      F10=17408;
 
-     Enter=13;
+     {Enter=13; todo: replace this codes with ones from keyboard module}
+	 Enter=50338829;
      Esc=27;
      Space=32;
      Tab=9;
