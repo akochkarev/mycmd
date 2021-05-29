@@ -1,12 +1,11 @@
 unit main;
 
 interface
-uses dos,crt,keycodes,mytypes,drives;
+uses dos,crt,keycodes,mytypes,drives,keyboard;
 
 procedure SortByName(var Dir:TDirInfo;FileCntr:integer);
 procedure SortBySize(var Dir:TDirInfo;FileCntr:integer);
 procedure SortMode;
-function ReadScan:word;
 function IntLength(num:longint):byte;
 function FillStr(ch:char; n:byte):string;
 procedure WindowX(Wind:TWindPos);
@@ -105,23 +104,13 @@ begin
                 end
                  else WriteLn(SortModes[j]);
            end;
-           Key:=ReadScan;
+           Key:=GetKeyEvent;
            if (Key=UpKey) and (i<>1) then dec(i);
            if (Key=DownKey) and (i<>3) then inc(i);
            if Key=Enter then break;
      until false;
      Sort:=i;
      UpdatePathAll;
-end;
-
-function ReadScan:word;
-var
-   R:Registers;
-begin
-     R.AH:=$00;
-     Intr($16,R);
-     if R.AL<>0 then R.AH:=0;
-     ReadScan:=R.AX;
 end;
 
 function IntLength(num:longint):byte;
@@ -412,7 +401,7 @@ begin
      TextAttr:=MessColor;
      ClrScr;
      gotoxy(1,2); write(Mess);
-     ShowMessage:=ReadScan;
+     ShowMessage:=GetKeyEvent;
      TextAttr:=TAOld;
      RefreshPanels;
 end;
@@ -435,7 +424,7 @@ begin
      if IOResult <> 0 then
      begin
           Writeln('   Cant create directory');
-          ReadScan;
+          GetKeyEvent;
      end;
      UpdatePathAll;
      {$I+}
@@ -472,7 +461,7 @@ begin
                 if i=pos then TextAttr:=MessSelColor;
                 WriteLn('  ',DrvStr[i],'  '); TextAttr:=MessColor;
            end;
-           Key:=ReadScan;
+           Key:=GetKeyEvent;
            if Key=Enter then
            begin
                 if ActiveLeft then PathL:=DrvStr[pos]+':\'
@@ -514,7 +503,7 @@ begin
   GotoXY(2,5); Write(ToPath);
   GotoXY(16,7); Write('Enter-OK / Esc-Cancel');
   repeat
-        Key:=ReadScan;
+        Key:=GetKeyEvent;
         case Key of
         Esc : break;
         Enter :
@@ -578,7 +567,7 @@ begin
   GotoXY(16,7); Write('Enter-OK / Esc-Cancel');
   GotoXY(2,5); Write(ToPath);
   repeat
-        Key:=ReadScan;
+        Key:=GetKeyEvent;
         case Key of
         Esc : break;
         Enter :
@@ -619,7 +608,7 @@ begin
   GotoXY(2,3); Write(Path);
   GotoXY(16,7); Write('Enter-OK / Esc-Cancel');
   repeat
-        Key:=ReadScan;
+        Key:=GetKeyEvent;
         case Key of
         Esc : break;
         Enter :
@@ -661,7 +650,7 @@ begin
      GotoXY(2,3); Write(Path+Dir[CurPos].Name);
      GotoXY(16,7); Write('Enter-OK / Esc-Cancel');
      repeat
-        Key:=ReadScan;
+        Key:=GetKeyEvent;
         case Key of
         Esc : begin RefreshPanels; exit; end;
         Enter :
@@ -799,7 +788,7 @@ begin
      WriteLn('       Alexander Kochkaryov     ');
      WriteLn('            group 210a          ');
      WriteLn('            NGASU 2004          ');
-     ReadScan;
+     GetKeyEvent;
      RefreshPanels;
 end;
 
@@ -820,17 +809,16 @@ begin
           begin
                ReadLn(F,str);
                WriteLn(' ',str);
-               Key:=ReadScan;
+               Key:=GetKeyEvent;
                if Key=Esc then break;
           end;
           if Key=Esc then break;
      end;
      if Key=Esc then break else Reset(F);
      until false;
-     ReadScan;
+     GetKeyEvent;
      Close(F);
      RefreshPanels;
 end;
 
 end.{Ufff....}
-

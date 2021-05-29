@@ -1,6 +1,6 @@
 {$M 20384,0,0}
 
-uses crt,keycodes,mytypes,main;
+uses crt,keycodes,mytypes,main,keyboard;
 var AuxStr:string;
 begin  {main program}
      ClrScr;
@@ -18,10 +18,11 @@ begin  {main program}
      UpdatePathX(Mask,True,DirL,PathL,ItemsBegL,ItemsEndL,CurPosL,FileCntrL);
      UpdatePathX(Mask,False,DirR,PathR,ItemsBegR,ItemsEndR,CurPosR,FileCntrR);
      SwitchLeft;
-
+	
+	 InitKeyBoard;
 
      repeat   {Main cycle}
-      Key:=ReadScan;
+      Key:=GetKeyEvent;
       case Key of
         RightKey : SwitchRight;
         LeftKey  : SwitchLeft;
