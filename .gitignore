@@ -3,3 +3,5 @@ bin/
 *.spec
 *.pyc
 *.log
+*.exe
+*.o
