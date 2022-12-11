@@ -6,3 +6,5 @@ Application is very simple and limited, but may be useful for educational purpos
 
 It's like a piece of history for me :)
 
+![Screenshot](screenshots/mycmd.png)
+
